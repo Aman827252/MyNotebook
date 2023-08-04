@@ -1,14 +1,18 @@
-const connectToMongo=require('./db');
-const express=require('express');
-const app=express();
-const port=3000;
+const express=require("express")
+const app=express()
+const mongoDB=require("./db")
+const port=5000
+mongoDB();
 
 app.use(express.json())
 
-app.use('/api/auth',require('./routes/auth'))
-app.use('/api/notes',require('./routes/notes'))
+app.get("/",(req,res)=>{
+    res.status(200).json({msg: 'Hello'})
+})
+
+app.use("/api",require("./routes/notes"))
+app.use("/api",require("./routes/auth"))
 
 app.listen(port,()=>{
-    console.log(`Listening at ${port}`);
-});
-connectToMongo();
+    console.log(`Server Running at ${port}`);
+})

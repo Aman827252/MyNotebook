@@ -1,12 +1,8 @@
-const express=require('express');
-const router=express.Router();
+const express=require("express")
+const router=express.Router()
 
-router.get('/',(req,res)=>{
-    // obj={
-    //     a:'yfyj',
-    //     n: 5
-    // }
-    res.json([]);
+router.get("/notes",(req,res)=>{
+    res.status(200).json([])
 })
 
 module.exports=router;
