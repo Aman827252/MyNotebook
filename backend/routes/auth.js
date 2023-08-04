@@ -14,7 +14,7 @@ const JWT_SECRET="hellohowareyou"
 //     res.json(req.body);
 // })
 
-router.post("/auth",[
+router.post("/createuser",[
 
     body('name','Enter a valid name').isLength({min: 3}),
     body("email","Enter a valid email").isEmail(),
@@ -53,6 +53,43 @@ router.post("/auth",[
         console.error(error);
         res.status(500).send("Server Error")
     }
+})
+
+router.post("/login",[
+    body('email','Enter a valid Email'),
+    body('password','Enter a valid Password')
+],async(req,res)=>{
+
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()})
+    }
+
+    const {email,password}=req.body
+    try {
+        const userEmail=await User.findOne({email})
+        if(!userEmail){
+            return res.status(404).json({msg: "Please Provide Valid Email"});
+        }
+        // console.log(userEmail);
+        const validpass=await bcrypt.compare(password,userEmail.password);
+        if(!validpass){
+            return res.status(404).json({msg: "Please Provide Valid Password"});
+        }
+
+        const data={
+            user:{
+                id: userEmail.id
+            }
+        }
+        const authToken=jwt.sign(data,JWT_SECRET)
+        res.json({authToken})
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error")
+    }
+
 })
 
 module.exports=router;
