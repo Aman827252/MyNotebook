@@ -124,6 +124,7 @@ router.post("/getuser",fetchUser,async(req,res)=>{
         // req.user contains object and in the object there is an id so we can assess to that id by using req.user.id
 
         let userId=req.user.id;  // return user id through this id we can find the user and return that user
+        console.log(userId);
         const user=await User.findById(userId).select("-password")  // In this .select("-password") means password is not show in the response
         res.send(user)
 

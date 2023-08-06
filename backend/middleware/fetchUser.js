@@ -18,6 +18,8 @@ const fetchuser=(req,res,next)=>{
 
         const data=jwt.verify(token,JWT_SECRET)
         req.user=data.user // data.user have a object that contains id which pass to the req.user
+        // console.log(data);
+        // console.log(req.user);
         next();
     } catch (error) {
         res.status(401).send({error: "Please authenticate using valid token"})
