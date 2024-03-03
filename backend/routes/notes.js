@@ -7,7 +7,6 @@ const { body, validationResult } = require("express-validator")
 router.get("/fetchallnotes",fetchUser,async(req,res)=>{
     try {
         const notes=await Note.find({user: req.user.id}) // fetch all the notes have user id passed through the data.user to req.user in fetchUser middleware. 
-        console.log(req.user.id);
         res.json(notes);
     } catch (error) {
         console.error(error.message)
@@ -30,7 +29,6 @@ router.post("/addnote",fetchUser,[
             title, description, tag, user: req.user.id
         })
         const savednote=await note.save()
-        // console.log(req.user.id);
         res.json(savednote);
 
     } catch (error) {
@@ -62,8 +60,6 @@ router.put("/updatenote/:id",fetchUser,async(req,res)=>{
             return res.status(401).send("Not Allowed")
         }
         note=await Note.findByIdAndUpdate(req.params.id,{$set: newNote},{new: true})
-        // console.log(note.user.toString());
-        // console.log(req.user.id);
         res.json(note)
         
     } catch (error) {
